@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: centos 
+spec:
+  containers:
+  - name: centos
+    image: centos
+    imagePullPolicy: IfNotPresent 
+    command:
+    - sleep
+    - "3600"
+

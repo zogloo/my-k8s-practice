@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jenkins
+  namespace: kube-system
+  labels:
+    k8s-app: jenkins
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: jenkins
+    spec:
+      containers:
+      - name: jenkins
+        image: zogloo/jenkins_k8s 
+        imagePullPolicy: Never 
+        volumeMounts:
+        - name: jenkins-home
+          mountPath: /var/jenkins_home
+        - name: jenkins-sock
+          mountPath: /var/run
+        - name: docker-lib
+          mountPath: /var/lib/docker
+        ports:
+        - containerPort: 8080
+        - containerPort: 50000
+      volumes:
+        - name: jenkins-home
+          hostPath:
+            path: /var/www/webapps/jenkins
+        - name: jenkins-sock
+          hostPath: 
+            path: /var/run
+        - name: docker-lib
+          hostPath: 
+            path: /var/lib/docker
+      serviceAccount: "jenkins-admin" 
